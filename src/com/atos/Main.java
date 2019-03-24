@@ -3,9 +3,11 @@ package com.atos;
 import com.atos.exception.BookCurrentlyBorrowed;
 import com.atos.exception.BookNotBorrowed;
 import com.atos.exception.BookNotFoundException;
+import com.atos.exception.NoBookFound;
 import com.atos.model.Book;
 
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -92,8 +94,20 @@ public class Main {
                     System.out.println("Searched year:");
                     String searchedYear= input.nextLine();
                     //int searchedYear = input.nextInt();
-                    lib.findBookByParameters(searchedAuthor,searchedTitle,searchedYear);
-                    break;
+                   // lib.findBookByParameters(searchedAuthor,searchedTitle,searchedYear);
+                    while(true) {
+                        try {
+                            lib.findBookByParameters(searchedAuthor, searchedTitle, searchedYear);
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid Input, enter value again");
+                            searchedYear = input.nextLine();
+                        } catch (NoBookFound noBookFound) {
+                            noBookFound.printStackTrace();
+                            break;
+                        }
+                    }
+                            break;
                 case 9:
                     run = false;
                     break;

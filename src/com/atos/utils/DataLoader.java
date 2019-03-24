@@ -33,9 +33,9 @@ public final class DataLoader {
         return booksLoaded;
     }
 
-    public static List<Member> loadMembersData(){
+    public static Map<Integer,Member> loadMembersData(){
 
-        List<Member> membersLoaded = new ArrayList<>();
+        Map<Integer,Member> membersLoaded = new HashMap<>();
         try {
             File file = new File(ClassLoader.class.getResource("/com/atos/resources/members_example_data").getFile());
             Scanner sc = new Scanner(file);
@@ -43,7 +43,7 @@ public final class DataLoader {
             while (sc.hasNextLine()) {
                 String name = sc.nextLine();
                 Member newMember = new Member(name);
-                membersLoaded.add(newMember);
+                membersLoaded.put(newMember.getId(),newMember);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

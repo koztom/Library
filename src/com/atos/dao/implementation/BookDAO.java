@@ -28,8 +28,11 @@ public class BookDAO implements Dao<Book> {
         books.put(newBook.getId(), newBook);
     }
 
-    public void delete(Integer id) {
-        books.remove(id);
+    public void delete(Integer id) throws BookNotFoundException {
+        if(books.containsKey(id)){
+            books.remove(id);
+        } else throw new BookNotFoundException(id);
+
     }
 
     public List<Book> findBookByParameters(String author, String title, String yearString) throws NoBookFound {
@@ -57,7 +60,7 @@ public class BookDAO implements Dao<Book> {
                     .collect(Collectors.toList());
             searched = true;
         }
-        if(searched){
+        if(searched && !filteredBooks.isEmpty()){
            return filteredBooks;
         } else throw new NoBookFound();
     }

@@ -7,7 +7,6 @@ import com.atos.exception.NoBookFound;
 import com.atos.model.Book;
 
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -61,7 +60,7 @@ public class Main {
                     int findBookId = takeNumberInput();
                     try {
                         lib.getBookDetails(findBookId);
-                    } catch (BookNotFoundException e) {
+                    } catch (BookNotFoundException | BookNotBorrowed e) {
                         e.printStackTrace();
                     }
                     break;

@@ -1,5 +1,8 @@
 package com.atos.dao;
 
+import com.atos.exception.BookNotBorrowed;
+import com.atos.exception.BookNotFoundException;
+
 import java.util.Map;
 
 public interface Dao<T> {
@@ -10,5 +13,5 @@ public interface Dao<T> {
 
     void save(T t);
 
-    void delete(Integer id);
+    void delete(Integer id) throws BookNotFoundException, BookNotBorrowed;
 }

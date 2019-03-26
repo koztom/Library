@@ -1,12 +1,8 @@
 package com.atos;
-
 import com.atos.dao.implementation.BookDAO;
 import com.atos.dao.implementation.LoanDAO;
 import com.atos.dao.implementation.MemberDAO;
-import com.atos.exception.BookCurrentlyBorrowed;
-import com.atos.exception.BookNotBorrowed;
-import com.atos.exception.BookNotFoundException;
-import com.atos.exception.NoBookFound;
+import com.atos.exception.*;
 import com.atos.model.Book;
 import com.atos.model.Loan;
 import com.atos.model.Member;
@@ -77,10 +73,13 @@ public class Library {
         }
     }
 
-    private Member findMember(String name){
-        Member sought = memberDao.getByName(name);
-        if(sought == null){
-            System.out.println("No member found, creating new member:");
+    public Member findMember(String name){
+        Member sought;
+        try {
+            sought = memberDao.getByName(name);
+        } catch (MemberNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Creating new member:");
             sought = createMember(name);
             System.out.println(sought.toString());
         }
@@ -92,7 +91,7 @@ public class Library {
         System.out.println("There are "+bookDao.getAll().size()+" books, "+loanDAO.getAll().size()+" among them have been borrowed");
     }
 
-    public void getBookDetails(int bookId) throws BookNotFoundException {
+    public void getBookDetails(int bookId) throws BookNotFoundException, BookNotBorrowed {
         Book book = bookDao.get(bookId);
         System.out.println("Book:"+book.toString());
         if (!book.getAvailable()){
